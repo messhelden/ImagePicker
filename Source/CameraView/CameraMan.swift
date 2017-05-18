@@ -111,7 +111,7 @@ class CameraMan {
 
     queue.async {
       self.session.startRunning()
-
+      self.flash(.on)
       DispatchQueue.main.async {
         self.delegate?.cameraManDidStart(self)
       }
