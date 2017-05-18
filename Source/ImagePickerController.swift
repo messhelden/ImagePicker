@@ -49,7 +49,7 @@ open class ImagePickerController: UIViewController {
     let controller = CameraView(configuration: self.configuration)
     controller.delegate = self
     controller.startOnFrontCamera = self.startOnFrontCamera
-
+    
     return controller
     }()
 
