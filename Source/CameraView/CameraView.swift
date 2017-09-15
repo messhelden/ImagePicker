@@ -195,14 +195,15 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
 
   // MARK: - Camera actions
 
-  func rotateCamera() {
+
+  func rotateCamera(completion: (() -> Void)? = nil) {
     UIView.animate(withDuration: 0.3, animations: {
       self.containerView.alpha = 1
       }, completion: { _ in
         self.cameraMan.switchCamera {
           UIView.animate(withDuration: 0.7, animations: {
             self.containerView.alpha = 0
-          })
+          }, completion: { _ in completion?() })
         }
     })
   }
