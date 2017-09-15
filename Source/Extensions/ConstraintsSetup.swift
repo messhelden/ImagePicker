@@ -74,6 +74,18 @@ extension TopView {
     addConstraint(NSLayoutConstraint(item: flashButton, attribute: .width,
       relatedBy: .equal, toItem: nil, attribute: .notAnAttribute,
       multiplier: 1, constant: 55))
+    
+    addConstraint(NSLayoutConstraint(item: stageLabel, attribute: .centerX,
+      relatedBy: .equal, toItem: self, attribute: .centerX,
+      multiplier: 1, constant: Dimensions.leftOffset))
+    
+    addConstraint(NSLayoutConstraint(item: stageLabel, attribute: .centerY,
+      relatedBy: .equal, toItem: self, attribute: .centerY,
+      multiplier: 1, constant: 0))
+    
+    addConstraint(NSLayoutConstraint(item: stageLabel, attribute: .width,
+      relatedBy: .equal, toItem: nil, attribute: .notAnAttribute,
+      multiplier: 1, constant: 100))
 
     if configuration.canRotateCamera {
       addConstraint(NSLayoutConstraint(item: rotateCamera, attribute: .right,

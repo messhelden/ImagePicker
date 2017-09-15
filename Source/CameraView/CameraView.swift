@@ -200,7 +200,7 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
     cameraMan.flash(mapping[title] ?? .auto)
   }
 
-  func takePicture(_ completion: @escaping () -> ()) {
+  func takePicture(_ completion: @escaping () -> Void) {
     guard let previewLayer = previewLayer else { return }
 
     UIView.animate(withDuration: 0.1, animations: {
@@ -216,7 +216,7 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
       self.delegate?.imageToLibrary()
     }
   }
-
+  
   // MARK: - Timer methods
 
   func timerDidFire() {
