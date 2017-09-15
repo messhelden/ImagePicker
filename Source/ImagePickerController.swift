@@ -10,7 +10,7 @@ import Photos
 }
 
 public protocol ImagePickerCameraStageDelegate: class {
-  func didTakePhoto()
+    func didTakePhoto(newStage: CameraStage)
 }
 
 open class ImagePickerController: UIViewController {
@@ -351,21 +351,23 @@ open class ImagePickerController: UIViewController {
     switch self.configuration.cameraStage {
     case .front:
       configuration.cameraStage = .top
-      cameraStageDelegate?.didTakePhoto()
+      cameraStageDelegate?.didTakePhoto(newStage: .top)
     case .top:
-      configuration.cameraStage = .top
-      cameraStageDelegate?.didTakePhoto()
+      configuration.cameraStage = .side
+      cameraStageDelegate?.didTakePhoto(newStage: .side)
     case .side:
       configuration.cameraStage = .bottom
-      cameraController.rotateCamera()
-      cameraStageDelegate?.didTakePhoto()
+      cameraController.rotateCamera() { [unowned self] in
+        self.cameraStageDelegate?.didTakePhoto(newStage: .bottom)
+      }
     case .bottom:
       configuration.cameraStage = .any
-      cameraController.rotateCamera()
-      cameraStageDelegate?.didTakePhoto()
+      cameraController.rotateCamera() { [unowned self] in
+        self.cameraStageDelegate?.didTakePhoto(newStage: .any)
+      }
     case .any:
       configuration.cameraStage = .any
-      cameraStageDelegate?.didTakePhoto()
+      cameraStageDelegate?.didTakePhoto(newStage: .any)
     }
   }
 }
