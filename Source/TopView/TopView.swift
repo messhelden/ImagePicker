@@ -6,6 +6,14 @@ protocol TopViewDelegate: class {
   func rotateDeviceDidPress()
 }
 
+public enum CameraStage: String {
+  case front = "Front-face",
+  top = "Top-face",
+  side = "Side-face",
+  bottom = "Bottom-face",
+  any = ""
+}
+
 open class TopView: UIView {
 
   struct Dimensions {
@@ -32,7 +40,17 @@ open class TopView: UIView {
     button.accessibilityLabel = "Flash mode is auto"
     button.accessibilityHint = "Double-tap to change flash mode"
     button.isEnabled = false
+    
     return button
+    }()
+  
+  lazy var stageLabel: UILabel = { [unowned self] in
+    let label = UILabel()
+    label.text = self.configuration.cameraStage.rawValue
+    label.font = self.configuration.settingsFont
+    label.textColor = .white
+    
+    return label
     }()
 
   open lazy var rotateCamera: UIButton = { [unowned self] in
@@ -68,19 +86,19 @@ open class TopView: UIView {
   }
 
   func configure() {
-    var buttons: [UIButton] = [flashButton]
+    var views: [UIView] = [flashButton, stageLabel]
 
     if configuration.canRotateCamera {
-      buttons.append(rotateCamera)
+      views.append(rotateCamera)
     }
 
-    for button in buttons {
-      button.layer.shadowColor = UIColor.black.cgColor
-      button.layer.shadowOpacity = 0.5
-      button.layer.shadowOffset = CGSize(width: 0, height: 1)
-      button.layer.shadowRadius = 1
-      button.translatesAutoresizingMaskIntoConstraints = false
-      addSubview(button)
+    for view in views {
+      view.layer.shadowColor = UIColor.black.cgColor
+      view.layer.shadowOpacity = 0.5
+      view.layer.shadowOffset = CGSize(width: 0, height: 1)
+      view.layer.shadowRadius = 1
+      view.translatesAutoresizingMaskIntoConstraints = false
+      addSubview(view)
     }
 
     flashButton.isHidden = configuration.flashButtonAlwaysHidden
@@ -115,5 +133,11 @@ open class TopView: UIView {
 
   @objc func rotateCameraButtonDidPress(_ button: UIButton) {
     delegate?.rotateDeviceDidPress()
+  }
+}
+
+extension TopView: ImagePickerCameraStageDelegate {
+  public func didTakePhoto() {
+    stageLabel.text = configuration.cameraStage.rawValue
   }
 }

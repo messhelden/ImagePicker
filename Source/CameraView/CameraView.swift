@@ -232,7 +232,7 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
       self.delegate?.imageToLibrary()
     }
   }
-
+  
   // MARK: - Timer methods
 
   @objc func timerDidFire() {

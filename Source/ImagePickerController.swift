@@ -9,6 +9,10 @@ import Photos
   func cancelButtonDidPress(_ imagePicker: ImagePickerController)
 }
 
+public protocol ImagePickerCameraStageDelegate: class {
+  func didTakePhoto()
+}
+
 open class ImagePickerController: UIViewController {
 
   let configuration: Configuration
@@ -41,7 +45,7 @@ open class ImagePickerController: UIViewController {
     let view = TopView(configuration: self.configuration)
     view.backgroundColor = UIColor.clear
     view.delegate = self
-
+    self.cameraStageDelegate = view
     return view
     }()
 
@@ -69,7 +73,8 @@ open class ImagePickerController: UIViewController {
 
   var volume = AVAudioSession.sharedInstance().outputVolume
 
-  @objc open weak var delegate: ImagePickerDelegate?
+  open weak var cameraStageDelegate: ImagePickerCameraStageDelegate?
+  open weak var delegate: ImagePickerDelegate?
   open var stack = ImageStack()
   open var imageLimit = 0
   open var preferredImageSize: CGSize?
@@ -349,15 +354,38 @@ open class ImagePickerController: UIViewController {
     isTakingPicture = true
     bottomContainer.pickerButton.isEnabled = false
     bottomContainer.stackView.startLoader()
-    let action: () -> Void = { [weak self] in
-      guard let `self` = self else { return }
-      self.cameraController.takePicture { self.isTakingPicture = false }
-    }
+    let action: () -> Void = { [unowned self] in
+      self.cameraController.takePicture {
+        self.didTakePicture()
+        self.isTakingPicture = false }
+      }
 
     if configuration.collapseCollectionViewWhileShot {
       collapseGalleryView(action)
     } else {
       action()
+    }
+  }
+  
+  fileprivate func didTakePicture() {
+    switch self.configuration.cameraStage {
+    case .front:
+      configuration.cameraStage = .top
+      cameraStageDelegate?.didTakePhoto()
+    case .top:
+      configuration.cameraStage = .top
+      cameraStageDelegate?.didTakePhoto()
+    case .side:
+      configuration.cameraStage = .bottom
+      cameraController.rotateCamera()
+      cameraStageDelegate?.didTakePhoto()
+    case .bottom:
+      configuration.cameraStage = .any
+      cameraController.rotateCamera()
+      cameraStageDelegate?.didTakePhoto()
+    case .any:
+      configuration.cameraStage = .any
+      cameraStageDelegate?.didTakePhoto()
     }
   }
 }

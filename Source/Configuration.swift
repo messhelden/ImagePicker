@@ -41,18 +41,23 @@ import UIKit
 
   // MARK: Custom behaviour
 
-  @objc public var canRotateCamera = true
-  @objc public var collapseCollectionViewWhileShot = true
-  @objc public var recordLocation = true
-  @objc public var allowMultiplePhotoSelection = true
-  @objc public var allowVideoSelection = false
-  @objc public var showsImageCountLabel = true
-  @objc public var flashButtonAlwaysHidden = false
-  @objc public var managesAudioSession = true
-  @objc public var allowPinchToZoom = true
-  @objc public var allowedOrientations = UIInterfaceOrientationMask.all
-  @objc public var allowVolumeButtonsToTakePicture = true
-  @objc public var useLowResolutionPreviewImage = false
+
+
+  public var flashButtonAlwaysHidden = false
+  public var managesAudioSession = true
+  public var allowPinchToZoom = true
+  public var allowedOrientations = UIInterfaceOrientationMask.all
+  public var allowVolumeButtonsToTakePicture = true
+  public var useLowResolutionPreviewImage = false
+
+  public var canRotateCamera = true
+  public var collapseCollectionViewWhileShot = true
+  public var recordLocation = true
+  public var allowMultiplePhotoSelection = true
+  public var allowVideoSelection = false
+  public var showsImageCountLabel = true
+  public var cameraStage: CameraStage = .front
+  
 
   // MARK: Images
   @objc public var indicatorView: UIView = {
