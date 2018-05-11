@@ -137,7 +137,7 @@ open class TopView: UIView {
 }
 
 extension TopView: ImagePickerCameraStageDelegate {
-  public func didTakePhoto() {
-    stageLabel.text = configuration.cameraStage.rawValue
+  public func didTakePhoto(newStage: CameraStage) {
+    stageLabel.text = newStage.rawValue
   }
 }
