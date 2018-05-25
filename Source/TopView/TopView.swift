@@ -7,10 +7,10 @@ protocol TopViewDelegate: class {
 }
 
 public enum CameraStage: String {
-  case front = "Front-face",
-  top = "Top-face",
-  side = "Side-face",
-  bottom = "Bottom-face",
+  case front = "Frontalsicht",
+  top = "Draufsicht",
+  side = "Seitenansicht",
+  bottom = "Unteransicht",
   any = ""
 }
 
